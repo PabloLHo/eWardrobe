@@ -20,7 +20,7 @@
             android:name=".Screens.PrendaScreen"
             android:exported="false" />
         <activity
-            android:name=".Screens.SettingsScreen"
+            android:name=".Screens.CreaOutfitScreen"
             android:exported="false" />
         <activity
             android:name=".Screens.ProfileScreen"

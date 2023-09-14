@@ -3,12 +3,9 @@ package com.example.ewardrobe.Screens;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -103,8 +100,8 @@ public class ProfileScreen extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(ProfileScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "HomeFragment");
             startActivity(intent);
-        }else if(itemID == R.id.nav_setting){
-            Intent intent = new Intent(ProfileScreen.this, SettingsScreen.class);
+        }else if(itemID == R.id.nav_outfitcreator){
+            Intent intent = new Intent(ProfileScreen.this, CreaOutfitScreen.class);
             startActivity(intent);
         }else if(itemID == R.id.nav_logout){
             SharedPreferences.Editor aux = getSharedPreferences("com.example.ewardrobe.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE).edit();

@@ -1,5 +1,6 @@
 package com.example.ewardrobe.BBDD;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,16 +17,27 @@ public class Prenda implements Parcelable {
     private String nombre;
     private String marca;
 
+    private Boolean destacada;
 
 
 
-    public Prenda(ArrayList<String> colores, ArrayList<String> caracteristicas, String tipo, String foto, String nombre, String marca) {
+
+    public Prenda(ArrayList<String> colores, ArrayList<String> caracteristicas, String tipo, String foto, String nombre, String marca, Boolean destacada) {
         this.colores = colores;
         this.caracteristicas = caracteristicas;
         this.tipo = tipo;
         this.fotoURL = foto;
         this.nombre = nombre;
         this.marca = marca;
+        this.destacada = destacada;
+    }
+
+    public Boolean getDestacada() {
+        return destacada;
+    }
+
+    public void setDestacada(Boolean destacada) {
+        this.destacada = destacada;
     }
 
     public String getFotoURL() {
@@ -101,6 +113,9 @@ public class Prenda implements Parcelable {
         parcel.writeString(fotoURL);
         parcel.writeStringList(colores);
         parcel.writeStringList(caracteristicas);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            parcel.writeBoolean(destacada);
+        }
     }
 
 
@@ -111,6 +126,9 @@ public class Prenda implements Parcelable {
         fotoURL = in.readString();
         colores = in.createStringArrayList();
         caracteristicas = in.createStringArrayList();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            destacada = in.readBoolean();
+        }
     }
 
     public static final Creator<Prenda> CREATOR = new Creator<Prenda>() {

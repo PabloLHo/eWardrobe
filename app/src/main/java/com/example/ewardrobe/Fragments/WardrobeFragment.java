@@ -73,7 +73,6 @@ public class WardrobeFragment extends Fragment {
                         for (DataSnapshot snapshotCarac : dataSnapshot.child("caracteristicas").getChildren()) {
                             caracteristicas.add(snapshotCarac.getValue(String.class));
                         }
-                        Prenda prenda = new Prenda(colores, caracteristicas, tipo, foto, nombre, marca);
 
                     }
                 }

@@ -146,6 +146,7 @@ public class PrendasFragment extends Fragment {
                     String nombre = dataSnapshot.child("nombre").getValue(String.class);
                     String tipo = dataSnapshot.child("tipo").getValue(String.class);
                     String marca = dataSnapshot.child("marca").getValue(String.class);
+                    Boolean destacada = dataSnapshot.child("destacada").getValue(Boolean.class);
                     ArrayList<String> colores = new ArrayList<>();
                     ArrayList<String> caracteristicas = new ArrayList<>();
                     for (DataSnapshot snapshotColores: dataSnapshot.child("colores").getChildren()) {
@@ -154,7 +155,7 @@ public class PrendasFragment extends Fragment {
                     for (DataSnapshot snapshotCarac: dataSnapshot.child("caracteristicas").getChildren()) {
                         caracteristicas.add(snapshotCarac.getValue(String.class));
                     }
-                    Prenda prenda = new Prenda(colores, caracteristicas, tipo, foto, nombre, marca);
+                    Prenda prenda = new Prenda(colores, caracteristicas, tipo, foto, nombre, marca, destacada);
 
                     prendas.add(prenda);
                 }

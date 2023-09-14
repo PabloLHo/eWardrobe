@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class SettingsScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CreaOutfitScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private FragmentManager fragmentManager;
@@ -45,7 +43,7 @@ public class SettingsScreen extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_screen);
+        setContentView(R.layout.crea_outfit_screen);
         database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
         obtenerUsuario();
         toolbar = findViewById(R.id.toolbar);
@@ -83,7 +81,7 @@ public class SettingsScreen extends AppCompatActivity implements NavigationView.
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SettingsScreen.this, error.toException().toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CreaOutfitScreen.this, error.toException().toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -91,23 +89,23 @@ public class SettingsScreen extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemID = item.getItemId();
         if(itemID == R.id.nav_outfit){
-            Intent intent = new Intent(SettingsScreen.this, MainScreen.class);
+            Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "OutfitFragment");
             startActivity(intent);
         }else if(itemID == R.id.nav_wardrobe){
-            Intent intent = new Intent(SettingsScreen.this, MainScreen.class);
+            Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "WardrobeFragment");
             startActivity(intent);
         }else if(itemID == R.id.nav_clothes){
-            Intent intent = new Intent(SettingsScreen.this, MainScreen.class);
+            Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "PrendasFragment");
             startActivity(intent);
         }else if(itemID == R.id.nav_home){
-            Intent intent = new Intent(SettingsScreen.this, MainScreen.class);
+            Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "HomeFragment");
             startActivity(intent);
         }else if(itemID == R.id.nav_profile){
-            Intent intent = new Intent(SettingsScreen.this, ProfileScreen.class);
+            Intent intent = new Intent(CreaOutfitScreen.this, ProfileScreen.class);
             startActivity(intent);
         }else if(itemID == R.id.nav_logout){
             SharedPreferences.Editor aux = getSharedPreferences("com.example.ewardrobe.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE).edit();

@@ -169,7 +169,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/outfit" />
+                        android:src="@drawable/creacion" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -233,12 +233,12 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ajuste" />
+                        android:src="@drawable/outfit" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Configuración"
+                        android:text="Outfits"
                         android:textAlignment="center"
                         android:textColor="@color/green"
                         android:textStyle="bold" />

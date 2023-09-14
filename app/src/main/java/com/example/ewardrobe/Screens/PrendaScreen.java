@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -145,8 +143,8 @@ public class PrendaScreen extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(PrendaScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "HomeFragment");
             startActivity(intent);
-        }else if(itemID == R.id.nav_setting){
-            Intent intent = new Intent(this, SettingsScreen.class);
+        }else if(itemID == R.id.nav_outfitcreator){
+            Intent intent = new Intent(this, CreaOutfitScreen.class);
             startActivity(intent);
         }else if(itemID == R.id.nav_profile){
             Intent intent = new Intent(this, ProfileScreen.class);

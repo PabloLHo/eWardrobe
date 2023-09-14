@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.transition.Slide;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,18 @@ import android.view.ViewGroup;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.ewardrobe.BBDD.Prenda;
 import com.example.ewardrobe.Screens.LoginScreen;
 import com.example.ewardrobe.Screens.ProfileScreen;
 import com.example.ewardrobe.R;
-import com.example.ewardrobe.Screens.SettingsScreen;
+import com.example.ewardrobe.Screens.CreaOutfitScreen;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -31,6 +40,11 @@ public class HomeFragment extends Fragment {
 
     ArrayList<SlideModel> imagenes;
     FragmentManager fragmentManager;
+
+    DatabaseReference reference;
+    FirebaseDatabase database;
+
+    ImageSlider slider;
 
     String userID;
 
@@ -45,15 +59,41 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         userID = getArguments().getString("userID");
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
-        ImageSlider slider = view.findViewById(R.id.slider_image);
+        slider = view.findViewById(R.id.slider_image);
+        database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
 
         crearBotones(view);
         imagenes = new ArrayList<>();
+        obtenerDestacados();
 
-
-        slider.setImageList(imagenes);
 
         return view;
+    }
+
+    public void obtenerDestacados(){
+
+        reference = database.getReference();
+        Query query = reference.child("usuarios").child(userID).child("prendas");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Boolean destacada = dataSnapshot.child("destacada").getValue(Boolean.class);
+                    if(destacada) {
+
+                        String foto = dataSnapshot.child("fotoURL").getValue(String.class);
+                        imagenes.add(new SlideModel(foto, ScaleTypes.FIT));
+                        
+                    }
+                }
+                slider.setImageList(imagenes);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void crearBotones(View v){
@@ -111,7 +151,7 @@ public class HomeFragment extends Fragment {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SettingsScreen.class);
+                Intent intent = new Intent(getActivity(), CreaOutfitScreen.class);
                 startActivity(intent);
                 getActivity().finish();
             }

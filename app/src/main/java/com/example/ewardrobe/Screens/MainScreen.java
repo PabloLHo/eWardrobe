@@ -197,7 +197,7 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
                                     imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
                                         public void onSuccess(Uri uri) {
-                                            Prenda aux = new Prenda(colores, caracteristicas, t1.getText().toString(), uri.toString() , e1.getText().toString(), e2.getText().toString());
+                                            Prenda aux = new Prenda(colores, caracteristicas, t1.getText().toString(), uri.toString() , e1.getText().toString(), e2.getText().toString(), false);
                                             Toast.makeText(MainScreen.this, "Imagen guardada", Toast.LENGTH_SHORT).show();
                                             reference = database.getReference();
                                             reference.child("usuarios").child(user.getId()).child("prendas").child(aux.getNombre()).setValue(aux);
@@ -354,8 +354,8 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
             Intent intent = new Intent(MainScreen.this, LoginScreen.class);
             startActivity(intent);
             finish();
-        }else if(itemID == R.id.nav_setting){
-            Intent intent = new Intent(this, SettingsScreen.class);
+        }else if(itemID == R.id.nav_outfitcreator){
+            Intent intent = new Intent(this, CreaOutfitScreen.class);
             startActivity(intent);
             finish();
         }else if(itemID == R.id.nav_profile){
