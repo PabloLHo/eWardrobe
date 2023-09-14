@@ -353,12 +353,15 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(MainScreen.this, LoginScreen.class);
             startActivity(intent);
+            finish();
         }else if(itemID == R.id.nav_setting){
             Intent intent = new Intent(this, SettingsScreen.class);
             startActivity(intent);
+            finish();
         }else if(itemID == R.id.nav_profile){
             Intent intent = new Intent(this, ProfileScreen.class);
             startActivity(intent);
+            finish();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -569,5 +572,6 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
         Intent intent = new Intent(this, PrendaScreen.class);
         intent.putExtras(bundle);
         startActivity(intent);
+        finish();
     }
 }

@@ -3,6 +3,7 @@ package com.example.ewardrobe.Screens;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -51,14 +52,6 @@ public class LoginScreen extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         compruebaSesion();
-
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                finish();
-            }
-        };
-        LoginScreen.this.getOnBackPressedDispatcher().addCallback(this, callback);
 
     }
 
@@ -181,6 +174,11 @@ public class LoginScreen extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 }

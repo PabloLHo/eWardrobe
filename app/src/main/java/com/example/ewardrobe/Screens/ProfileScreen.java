@@ -33,7 +33,6 @@ public class ProfileScreen extends AppCompatActivity implements NavigationView.O
 
     private DrawerLayout drawer;
     private FragmentManager fragmentManager;
-    private Toolbar toolbar;
 
     String email;
     Usuario user;
@@ -48,11 +47,9 @@ public class ProfileScreen extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.profile_screen);
         database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
         obtenerUsuario();
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -118,6 +115,7 @@ public class ProfileScreen extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
+        finish();
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

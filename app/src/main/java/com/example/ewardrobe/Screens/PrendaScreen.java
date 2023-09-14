@@ -160,6 +160,7 @@ public class PrendaScreen extends AppCompatActivity implements NavigationView.On
             onBackPressed();
         }
         drawer.closeDrawer(GravityCompat.START);
+        finish();
         return true;
     }
 
@@ -170,11 +171,5 @@ public class PrendaScreen extends AppCompatActivity implements NavigationView.On
         }else {
             super.onBackPressed();
         }
-    }
-
-    private void openFragment(Fragment frag){
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, frag);
-        transaction.commit();
     }
 }

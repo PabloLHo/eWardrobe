@@ -119,6 +119,7 @@ public class SettingsScreen extends AppCompatActivity implements NavigationView.
             startActivity(intent);
         }
         drawer.closeDrawer(GravityCompat.START);
+        finish();
         return true;
     }
 
@@ -129,11 +130,5 @@ public class SettingsScreen extends AppCompatActivity implements NavigationView.
         }else {
             super.onBackPressed();
         }
-    }
-
-    private void openFragment(Fragment frag){
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, frag);
-        transaction.commit();
     }
 }

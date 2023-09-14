@@ -50,13 +50,6 @@ public class HomeFragment extends Fragment {
         crearBotones(view);
         imagenes = new ArrayList<>();
 
-        imagenes.add(new SlideModel(R.drawable.zapatillas, ScaleTypes.FIT));
-        imagenes.add(new SlideModel(R.drawable.abrigo, ScaleTypes.FIT));
-        imagenes.add(new SlideModel(R.drawable.sudadera, ScaleTypes.FIT));
-        imagenes.add(new SlideModel(R.drawable.abrigo2, ScaleTypes.FIT));
-        imagenes.add(new SlideModel(R.drawable.zapatillas2, ScaleTypes.FIT));
-        imagenes.add(new SlideModel(R.drawable.camiseta_barcelona, ScaleTypes.FIT));
-        imagenes.add(new SlideModel(R.drawable.pantalones, ScaleTypes.FIT));
 
         slider.setImageList(imagenes);
 
@@ -81,6 +74,7 @@ public class HomeFragment extends Fragment {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getActivity(), LoginScreen.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -89,6 +83,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ProfileScreen.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         prendas.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +113,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingsScreen.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         outfit.setOnClickListener(new View.OnClickListener() {
