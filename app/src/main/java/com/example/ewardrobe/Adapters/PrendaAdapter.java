@@ -1,11 +1,12 @@
-package com.example.ewardrobe.Prendas;
+package com.example.ewardrobe.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.example.ewardrobe.BBDD.Prenda;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +37,7 @@ public class PrendaAdapter extends RecyclerView.Adapter<PrendaAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        Glide.with(context).load(prendas.get(position).getFotoURL()).into(holder.staggeredImages);
     }
 
     @Override
@@ -57,13 +58,11 @@ public class PrendaAdapter extends RecyclerView.Adapter<PrendaAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView img;
-        private TextView txt;
-        private TextView color;
+        private  RoundedImageView staggeredImages;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            //img = itemView.findViewById(R.id.txt_foto);
+            staggeredImages = itemView.findViewById(R.id.staggeredImages);
         }
     }
 

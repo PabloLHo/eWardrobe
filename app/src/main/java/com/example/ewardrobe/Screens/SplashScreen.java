@@ -1,9 +1,11 @@
-package com.example.ewardrobe;
+package com.example.ewardrobe.Screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.ewardrobe.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +28,6 @@ public class SplashScreen extends AppCompatActivity {
         };
 
         Timer tiempo = new Timer();
-        tiempo.schedule(tarea,3000);
+        tiempo.schedule(tarea,2000);
     }
 }

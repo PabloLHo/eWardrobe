@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
-    <uses-feature android:name="android.hardware.camera"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,13 +15,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.EWardrobe"
-        tools:targetApi="31" >
+        tools:targetApi="31">
         <activity
-            android:name=".MainScreen"
+            android:name=".Screens.PrendaScreen"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen"
-            android:exported="true" >
+            android:name=".Screens.SettingsScreen"
+            android:exported="false" />
+        <activity
+            android:name=".Screens.ProfileScreen"
+            android:exported="false" />
+        <activity
+            android:name=".Screens.MainScreen"
+            android:exported="false" />
+        <activity
+            android:name=".Screens.SplashScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,9 +38,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginScreen"
+            android:name=".Screens.LoginScreen"
             android:exported="false"
-            android:noHistory="true"/>
+            android:noHistory="true" />
     </application>
 
 </manifest>

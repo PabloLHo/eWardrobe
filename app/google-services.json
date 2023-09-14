@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "481060477921",
+    "project_id": "ewardrobe-dcf0c",
+    "storage_bucket": "ewardrobe-dcf0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481060477921:android:3acd4869b69cd9f748d0a0",
+        "android_client_info": {
+          "package_name": "com.example.ewardrobe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481060477921-30467vj1qhiit0vibn154e7860ko2i0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgeH0VcgyrRTJ-XH1og-L13jnB9REnHv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481060477921-30467vj1qhiit0vibn154e7860ko2i0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

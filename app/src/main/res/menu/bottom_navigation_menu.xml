@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_home"
+        android:title="Home"
+        android:icon="@drawable/baseline_home_24" />
+
+    <item
+    android:id="@+id/bottom_clothes"
+    android:title="Prendas"
+    android:icon="@drawable/moda" />
+
+    <item
+        android:title=""
+        android:enabled="true" />
+
+    <item
+        android:id="@+id/bottom_wardrobe"
+        android:title="Armarios"
+        android:icon="@drawable/armario" />
+
+    <item
+        android:id="@+id/bottom_outfit"
+        android:title="Outfits"
+        android:icon="@drawable/clothing" />
+</menu>
