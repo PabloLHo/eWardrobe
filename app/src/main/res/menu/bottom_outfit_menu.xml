@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_top"
+        android:title="Superior"
+        android:icon="@drawable/camiseta" />
+
+    <item
+        android:id="@+id/bottom_middle"
+        android:title="Medio"
+        android:icon="@drawable/pantalones" />
+
+    <item
+        android:id="@+id/bottom_bottom"
+        android:title="Inferior"
+        android:icon="@drawable/zapatos" />
+
+    <item
+        android:id="@+id/bottom_fullbody"
+        android:title="Cuerpo completo"
+        android:icon="@drawable/mono" />
+
+    <item
+        android:id="@+id/bottom_accs"
+        android:title="Accesorios"
+        android:icon="@drawable/reloj" />
+
+    <item
+        android:title=""
+        android:enabled="true" />
+</menu>

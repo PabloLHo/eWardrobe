@@ -2,22 +2,45 @@ package com.example.ewardrobe.Screens;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTabHost;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ewardrobe.BBDD.Prenda;
 import com.example.ewardrobe.BBDD.Usuario;
+import com.example.ewardrobe.Fragments.HomeFragment;
+import com.example.ewardrobe.Fragments.OutfitFragment;
+import com.example.ewardrobe.Fragments.PrendasFragment;
+import com.example.ewardrobe.Fragments.WardrobeFragment;
 import com.example.ewardrobe.R;
+import com.example.ewardrobe.Screens.OutfitTabs.Accesorios;
+import com.example.ewardrobe.Screens.OutfitTabs.Inferior;
+import com.example.ewardrobe.Screens.OutfitTabs.Medio;
+import com.example.ewardrobe.Screens.OutfitTabs.Superior;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,16 +49,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class CreaOutfitScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private FragmentManager fragmentManager;
+    private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
+    private FloatingActionButton fab;
 
     String email;
     Usuario user;
-
     DatabaseReference reference;
     FirebaseDatabase database;
 
@@ -58,6 +87,48 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
+
+        bottomNavigationView = findViewById(R.id.bottom_menu_outfit);
+        bottomNavigationView.setBackground(null);
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemID = item.getItemId();
+                Bundle args = new Bundle();
+                args.putString("userID", user.getId());
+                if(itemID == R.id.bottom_outfit){
+                    OutfitFragment outfitFragment = new OutfitFragment();
+                    outfitFragment.setArguments(args);
+                    openFragment(outfitFragment);
+                    return true;
+                }else if(itemID == R.id.bottom_wardrobe){
+                    WardrobeFragment wardrobeFragment = new WardrobeFragment();
+                    wardrobeFragment.setArguments(args);
+                    openFragment(wardrobeFragment);
+                    return true;
+                }else if(itemID == R.id.bottom_clothes){
+                    PrendasFragment prendas = new PrendasFragment();
+                    prendas.setArguments(args);
+                    openFragment(prendas);
+                    return true;
+                }else if(itemID == R.id.bottom_home){
+                    HomeFragment home = new HomeFragment();
+                    home.setArguments(args);
+                    openFragment(home);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     private void obtenerUsuario(){
@@ -128,5 +199,11 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         }else {
             super.onBackPressed();
         }
+    }
+
+    private void openFragment(Fragment frag){
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, frag);
+        transaction.commit();
     }
 }
