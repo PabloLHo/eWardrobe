@@ -78,13 +78,11 @@ public class OutfitFragment extends Fragment {
         database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
         filtrosVisibles = false;
         prendas = new ArrayList<>();
-        searchList = new ArrayList<>();
 
         img = view.findViewById(R.id.superior);
         img2 = view.findViewById(R.id.piernas);
         img3 = view.findViewById(R.id.pies);
 
-        searchList.addAll(prendas);
         prendaAdapter = new PrendaAdapter(searchList, getContext());
         recycler.setAdapter(prendaAdapter);
 

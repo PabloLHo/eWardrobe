@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ewardrobe.Fragments.OutfitFragment;
 import com.example.ewardrobe.Fragments.PrendasFragment;
 import com.example.ewardrobe.R;
+import com.example.ewardrobe.Screens.OutfitTabs.Superior;
 
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class FiltroColorAdapter extends RecyclerView.Adapter<FiltroColorAdapter.
     private PrendasFragment prendasFragment;
     private OutfitFragment outfitFragment;
 
-    private boolean outfit = false;
+    private Superior superior;
+
+    private int outfit = 0;
 
     public FiltroColorAdapter(List<String> caracteristicas, Context context, PrendasFragment fragment) {
         this.botones = caracteristicas;
@@ -40,7 +43,14 @@ public class FiltroColorAdapter extends RecyclerView.Adapter<FiltroColorAdapter.
         this.botones = caracteristicas;
         this.context = context;
         this.outfitFragment = fragment;
-        outfit = true;
+        outfit = 1;
+    }
+
+    public FiltroColorAdapter (List<String> caracteristicas, Context context, Superior fragment) {
+        this.botones = caracteristicas;
+        this.context = context;
+        this.superior = fragment;
+        outfit = 2;
     }
 
     @NonNull
@@ -70,16 +80,16 @@ public class FiltroColorAdapter extends RecyclerView.Adapter<FiltroColorAdapter.
                     if (button.getBackgroundTintList().getDefaultColor() == context.getResources().getColor(R.color.Gris_strong)) {
                         int colorId = context.getResources().getColor(context.getResources().getIdentifier(item, "color", context.getPackageName()));
                         button.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(colorIdCompat)));
-                        if(outfit){
+                        if(outfit == 1){
                             outfitFragment.filtradoBotones(button.getText().toString(), "no-filtrar", "color");
-                        }else {
+                        }else if(outfit == 0) {
                             prendasFragment.filtradoBotones(button.getText().toString(), "no-filtrar", "color");
                         }
                     } else {
                         button.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.Gris_strong)));
-                        if(outfit){
+                        if(outfit == 1){
                             outfitFragment.filtradoBotones(button.getText().toString(), "filtrar", "color");
-                        }else {
+                        }else if(outfit == 0) {
                             prendasFragment.filtradoBotones(button.getText().toString(), "filtrar", "color");
                         }
                     }

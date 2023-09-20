@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,9 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ewardrobe.Adapters.PrendaAdapter;
 import com.example.ewardrobe.BBDD.Prenda;
 import com.example.ewardrobe.BBDD.Usuario;
 import com.example.ewardrobe.Fragments.HomeFragment;
@@ -54,6 +58,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class CreaOutfitScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,6 +73,13 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
     DatabaseReference reference;
     FirebaseDatabase database;
 
+    ImageView img, img2,img3;
+
+    ImageButton superior,piernas,pies;
+
+    PrendaAdapter prendaAdapter;
+    List<Prenda> prendas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +89,7 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         obtenerUsuario();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        fab = findViewById(R.id.botonMas);
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
@@ -88,7 +100,7 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
 
-        bottomNavigationView = findViewById(R.id.bottom_menu_outfit);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setBackground(null);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -96,26 +108,18 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
                 Bundle args = new Bundle();
-                args.putString("userID", user.getId());
-                if(itemID == R.id.bottom_outfit){
-                    OutfitFragment outfitFragment = new OutfitFragment();
-                    outfitFragment.setArguments(args);
-                    openFragment(outfitFragment);
+
+                if(itemID == R.id.bottom_top){
+
                     return true;
-                }else if(itemID == R.id.bottom_wardrobe){
-                    WardrobeFragment wardrobeFragment = new WardrobeFragment();
-                    wardrobeFragment.setArguments(args);
-                    openFragment(wardrobeFragment);
+                }else if(itemID == R.id.bottom_bottom){
+
                     return true;
-                }else if(itemID == R.id.bottom_clothes){
-                    PrendasFragment prendas = new PrendasFragment();
-                    prendas.setArguments(args);
-                    openFragment(prendas);
+                }else if(itemID == R.id.bottom_middle){
+
                     return true;
-                }else if(itemID == R.id.bottom_home){
-                    HomeFragment home = new HomeFragment();
-                    home.setArguments(args);
-                    openFragment(home);
+                }else if(itemID == R.id.bottom_accs){
+
                     return true;
                 }
                 return false;
@@ -129,7 +133,80 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             }
         });
 
+        img = findViewById(R.id.superior);
+        img2 = findViewById(R.id.piernas);
+        img3 = findViewById(R.id.pies);
+
+        superior = findViewById(R.id.limpiaSuperior);
+        superior.setVisibility(View.INVISIBLE);
+        superior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                img.setImageResource(android.R.color.transparent);
+                superior.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        piernas = findViewById(R.id.limpiaPiernas);
+        piernas.setVisibility(View.INVISIBLE);
+        piernas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                img2.setImageResource(android.R.color.transparent);
+                piernas.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        pies = findViewById(R.id.limpiaPies);
+        pies.setVisibility(View.INVISIBLE);
+        pies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                img3.setImageResource(android.R.color.transparent);
+                pies.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        obtenerPrendas();
+
+
     }
+
+    private void obtenerPrendas(){
+
+        reference = database.getReference();
+        Query query = reference.child("usuarios").child(user.getId()).child("prendas");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    String foto = dataSnapshot.child("fotoURL").getValue(String.class);
+                    String nombre = dataSnapshot.child("nombre").getValue(String.class);
+                    String tipo = dataSnapshot.child("tipo").getValue(String.class);
+                    String marca = dataSnapshot.child("marca").getValue(String.class);
+                    Boolean destacada = dataSnapshot.child("destacada").getValue(Boolean.class);
+                    ArrayList<String> colores = new ArrayList<>();
+                    ArrayList<String> caracteristicas = new ArrayList<>();
+                    for (DataSnapshot snapshotColores: dataSnapshot.child("colores").getChildren()) {
+                        colores.add(snapshotColores.getValue(String.class));
+                    }
+                    for (DataSnapshot snapshotCarac: dataSnapshot.child("caracteristicas").getChildren()) {
+                        caracteristicas.add(snapshotCarac.getValue(String.class));
+                    }
+                    Prenda prenda = new Prenda(colores, caracteristicas, tipo, foto, nombre, marca, destacada);
+
+                    prendas.add(prenda);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
     private void obtenerUsuario(){
         email = getIntent().getStringExtra("email");
@@ -147,7 +224,6 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
                     user = new Usuario(usuario.getText().toString(), mail.getText().toString(), userSnapshot.child("pass").getValue(String.class));
                     user.setId(userSnapshot.getKey());
                 }
-
             }
 
             @Override
@@ -187,6 +263,7 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
+
         drawer.closeDrawer(GravityCompat.START);
         finish();
         return true;
@@ -199,11 +276,5 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         }else {
             super.onBackPressed();
         }
-    }
-
-    private void openFragment(Fragment frag){
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, frag);
-        transaction.commit();
     }
 }

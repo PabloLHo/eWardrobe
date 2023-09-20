@@ -16,11 +16,6 @@
         android:icon="@drawable/zapatos" />
 
     <item
-        android:id="@+id/bottom_fullbody"
-        android:title="Cuerpo completo"
-        android:icon="@drawable/mono" />
-
-    <item
         android:id="@+id/bottom_accs"
         android:title="Accesorios"
         android:icon="@drawable/reloj" />

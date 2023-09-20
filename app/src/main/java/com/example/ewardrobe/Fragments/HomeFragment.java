@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
 
         crearBotones(view);
         imagenes = new ArrayList<>();
-        obtenerDestacados();
+        //obtenerDestacados();
 
 
         return view;
