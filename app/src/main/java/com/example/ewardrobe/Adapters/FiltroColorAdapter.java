@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ewardrobe.Fragments.OutfitFragment;
 import com.example.ewardrobe.Fragments.PrendasFragment;
 import com.example.ewardrobe.R;
-import com.example.ewardrobe.Screens.OutfitTabs.Superior;
 
 import java.util.List;
 
@@ -28,8 +27,6 @@ public class FiltroColorAdapter extends RecyclerView.Adapter<FiltroColorAdapter.
 
     private PrendasFragment prendasFragment;
     private OutfitFragment outfitFragment;
-
-    private Superior superior;
 
     private int outfit = 0;
 
@@ -46,12 +43,6 @@ public class FiltroColorAdapter extends RecyclerView.Adapter<FiltroColorAdapter.
         outfit = 1;
     }
 
-    public FiltroColorAdapter (List<String> caracteristicas, Context context, Superior fragment) {
-        this.botones = caracteristicas;
-        this.context = context;
-        this.superior = fragment;
-        outfit = 2;
-    }
 
     @NonNull
     @Override

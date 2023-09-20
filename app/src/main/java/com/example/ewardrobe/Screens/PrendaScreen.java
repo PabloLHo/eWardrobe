@@ -151,14 +151,15 @@ public class PrendaScreen extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }else if(itemID == R.id.nav_logout){
             SharedPreferences.Editor aux = getSharedPreferences("com.example.ewardrobe.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE).edit();
-
             aux.clear();
+            aux.apply();
 
             FirebaseAuth.getInstance().signOut();
-            onBackPressed();
+            Intent intent = new Intent(PrendaScreen.this, LoginScreen.class);
+            startActivity(intent);
+            finish();
         }
         drawer.closeDrawer(GravityCompat.START);
-        finish();
         return true;
     }
 

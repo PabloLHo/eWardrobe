@@ -165,14 +165,14 @@
                                 android:text="Telefono:" />
 
                             <TextView
-                                android:id="@+id/textView6"
+                                android:id="@+id/tlf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="20sp"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/Azul"
                                 android:layout_weight="1"
-                                android:text="689753397" />
+                                android:text="N/A" />
                         </LinearLayout>
 
 
@@ -201,14 +201,14 @@
                                 android:text="Ubicación:" />
 
                             <TextView
-                                android:id="@+id/textView8"
+                                android:id="@+id/ubi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="20sp"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/Gris"
                                 android:layout_weight="1"
-                                android:text="España" />
+                                android:text="N/A" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -253,14 +253,14 @@
                                 android:text="Prendas:" />
 
                             <TextView
-                                android:id="@+id/textView10"
+                                android:id="@+id/nPrendas"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="20sp"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/Gris"
                                 android:layout_weight="1"
-                                android:text="120" />
+                                android:text="0" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -288,14 +288,14 @@
                                 android:text="Outfits:" />
 
                             <TextView
-                                android:id="@+id/textView12"
+                                android:id="@+id/nOutfits"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="20sp"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/Gris"
                                 android:layout_weight="1"
-                                android:text="15" />
+                                android:text="0" />
                         </LinearLayout>
 
 
@@ -324,14 +324,14 @@
                                 android:text="Armarios:" />
 
                             <TextView
-                                android:id="@+id/textView14"
+                                android:id="@+id/nArmarios"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="20sp"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/Gris"
                                 android:layout_weight="1"
-                                android:text="3" />
+                                android:text="0" />
                         </LinearLayout>
 
                     </LinearLayout>

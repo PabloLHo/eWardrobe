@@ -111,8 +111,8 @@ public class ProfileScreen extends AppCompatActivity implements NavigationView.O
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
+            finish();
         }
-        finish();
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -70,7 +70,7 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
     private ImageView img;
     private TextView textColor, textCarac, textPrenda;
     private int selectedItem = -1;
-    String[] prendas = {"Pantalón", "Falda", "Camiseta", "Camisa", "Zapatos", "Zapatillas", "Sudadera", "Chaqueta", "Vestido", "Traje", "Bañador", "Abrigo" ,"Accesorio", "Pijama", };
+    String[] prendas = {"Pantalón", "Falda", "Camiseta", "Camisa", "Zapatos", "Zapatillas", "Sudadera", "Chaqueta", "Vestido", "Traje", "Bañador", "Abrigo" ,"Accesorio", "Pijama" };
     String[] colores = {"Rojo", "Azul", "Amarillo", "Naranja", "Marron", "Rosa", "Morado", "Lila", "Blanco", "Negro", "Gris" , "Beige", "Turquesa", "Violeta"};
     String[] caracteristicas = {"Deportivo", "Elegante", "Casual", "Versatil", "Corto", "Largo", "Abrigado", "Fresco", "Holgado", "Ajustado" , "Comodo", "Formal" , "Informal", "Vintage", "Estampado", "Suave", "Aspero", "Térmica"};
 
@@ -357,11 +357,9 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
         }else if(itemID == R.id.nav_outfitcreator){
             Intent intent = new Intent(this, CreaOutfitScreen.class);
             startActivity(intent);
-            finish();
         }else if(itemID == R.id.nav_profile){
             Intent intent = new Intent(this, ProfileScreen.class);
             startActivity(intent);
-            finish();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;

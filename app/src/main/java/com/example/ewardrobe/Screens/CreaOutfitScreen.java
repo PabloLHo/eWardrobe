@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTabHost;
-import androidx.fragment.app.FragmentTransaction;
+
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,16 +31,7 @@ import android.widget.Toast;
 import com.example.ewardrobe.Adapters.PrendaAdapter;
 import com.example.ewardrobe.BBDD.Prenda;
 import com.example.ewardrobe.BBDD.Usuario;
-import com.example.ewardrobe.Fragments.HomeFragment;
-import com.example.ewardrobe.Fragments.OutfitFragment;
-import com.example.ewardrobe.Fragments.PrendasFragment;
-import com.example.ewardrobe.Fragments.WardrobeFragment;
 import com.example.ewardrobe.R;
-import com.example.ewardrobe.Screens.OutfitTabs.Accesorios;
-import com.example.ewardrobe.Screens.OutfitTabs.Inferior;
-import com.example.ewardrobe.Screens.OutfitTabs.Medio;
-import com.example.ewardrobe.Screens.OutfitTabs.Superior;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -53,20 +43,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+enum TipoRopa{
+    superior,
+    inferior,
+    medio,
+    accesorios
+}
 
 public class CreaOutfitScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
-    private FragmentManager fragmentManager;
     private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
     private FloatingActionButton fab;
+    RecyclerView recycler;
 
     String email;
     Usuario user;
@@ -79,6 +73,9 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
 
     PrendaAdapter prendaAdapter;
     List<Prenda> prendas;
+    List<Prenda> visibles;
+
+    TipoRopa visible;
 
 
     @Override
@@ -93,12 +90,16 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
+        recycler = findViewById(R.id.recyclerView);
+        recycler.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        recycler.setHasFixedSize(true);
+
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.navigation_drawer);
         navigationView.setNavigationItemSelectedListener(this);
-        fragmentManager = getSupportFragmentManager();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setBackground(null);
@@ -107,19 +108,22 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
-                Bundle args = new Bundle();
-
-                if(itemID == R.id.bottom_top){
-
-                    return true;
-                }else if(itemID == R.id.bottom_bottom){
-
-                    return true;
-                }else if(itemID == R.id.bottom_middle){
-
-                    return true;
-                }else if(itemID == R.id.bottom_accs){
-
+                boolean dentro = false;
+                if (itemID == R.id.bottom_top) {
+                    visible = TipoRopa.superior;
+                    dentro = true;
+                } else if (itemID == R.id.bottom_bottom) {
+                    visible = TipoRopa.inferior;
+                    dentro = true;
+                } else if (itemID == R.id.bottom_middle) {
+                    visible = TipoRopa.medio;
+                    dentro = true;
+                } else if (itemID == R.id.bottom_accs) {
+                    visible = TipoRopa.accesorios;
+                    dentro = true;
+                }
+                if (dentro){
+                    actualizaRopa();
                     return true;
                 }
                 return false;
@@ -167,6 +171,9 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             }
         });
 
+        prendas = new ArrayList<>();
+        visibles = new ArrayList<>();
+
         obtenerPrendas();
 
 
@@ -197,7 +204,10 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
 
                     prendas.add(prenda);
                 }
-
+                visible = TipoRopa.superior;
+                actualizaRopa();
+                prendaAdapter = new PrendaAdapter(visibles, getApplicationContext());
+                recycler.setAdapter(prendaAdapter);
             }
 
             @Override
@@ -262,10 +272,10 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
+            finish();
         }
 
         drawer.closeDrawer(GravityCompat.START);
-        finish();
         return true;
     }
 
@@ -275,6 +285,39 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             drawer.closeDrawer(GravityCompat.START);
         }else {
             super.onBackPressed();
+        }
+    }
+
+    public void actualizaRopa(){
+        visibles.clear();
+        ArrayList<String> opciones = new ArrayList<>();
+        switch (visible){
+            case superior:
+                opciones.add("Camiseta");
+                opciones.add("Camisa");
+                opciones.add("Sudadera");
+                opciones.add("Chaqueta");
+                opciones.add("Vestido");
+                opciones.add("Abrigo");
+                opciones.add("Traje");
+                opciones.add("Pijama");
+                break;
+            case medio:
+                opciones.add("Pantalón");
+                opciones.add("Falda");
+                opciones.add("Bañador");
+                break;
+            case inferior:
+                opciones.add("Zapatos");
+                opciones.add("Zapatillas");
+                break;
+            case accesorios:
+                opciones.add("Accesorio");
+                break;
+        }
+        for (int i = 0; i < prendas.size(); i++) {
+            if(opciones.contains(prendas.get(i).getTipo()))
+                visibles.add(prendas.get(i));
         }
     }
 }

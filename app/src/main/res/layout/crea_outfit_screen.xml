@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <LinearLayout
                 android:id="@+id/maniqui"
                 android:layout_width="match_parent"
@@ -118,6 +119,12 @@
 
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recyclerView"
+                app:layout_constraintTop_toBottomOf="@id/maniqui"/>
+
             <com.google.android.material.bottomappbar.BottomAppBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,6 +132,7 @@
                 android:layout_gravity="bottom"
                 android:backgroundTint="@color/green"
                 app:fabAlignmentMode="end"
+                app:fabAnimationMode="slide"
                 app:fabCradleMargin="10dp">
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
