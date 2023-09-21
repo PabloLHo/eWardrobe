@@ -27,6 +27,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -119,7 +120,10 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
                 int itemID = item.getItemId();
                 Bundle args = new Bundle();
                 args.putString("userID", user.getId());
+                ImageButton botonEdit = findViewById(R.id.botonEditar);
+                botonEdit.setVisibility(View.INVISIBLE);
                 if(itemID == R.id.bottom_outfit){
+                    botonEdit.setVisibility(View.VISIBLE);
                     OutfitFragment outfitFragment = new OutfitFragment();
                     outfitFragment.setArguments(args);
                     openFragment(outfitFragment);
@@ -235,23 +239,29 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
         if(fragmentAbrir != null) {
             Bundle args = new Bundle();
             args.putString("userID", user.getId());
+            args.putString("email", user.getMail());
+            ImageButton botonEdit = findViewById(R.id.botonEditar);
             switch (fragmentAbrir) {
                 case "HomeFragment":
+                    botonEdit.setVisibility(View.INVISIBLE);
                     HomeFragment home = new HomeFragment();
                     home.setArguments(args);
                     openFragment(home);
                     break;
                 case "OutfitFragment":
+                    botonEdit.setVisibility(View.VISIBLE);
                     OutfitFragment outfitFragment = new OutfitFragment();
                     outfitFragment.setArguments(args);
                     openFragment(outfitFragment);
                     break;
                 case "PrendasFragment":
+                    botonEdit.setVisibility(View.INVISIBLE);
                     PrendasFragment prendas = new PrendasFragment();
                     prendas.setArguments(args);
                     openFragment(prendas);
                     break;
                 case "WardrobeFragmnet":
+                    botonEdit.setVisibility(View.INVISIBLE);
                     WardrobeFragment wardrobeFragment = new WardrobeFragment();
                     wardrobeFragment.setArguments(args);
                     openFragment(wardrobeFragment);
@@ -328,7 +338,10 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
         int itemID = item.getItemId();
         Bundle args = new Bundle();
         args.putString("userID", user.getId());
+        ImageButton botonEdit = findViewById(R.id.botonEditar);
+        botonEdit.setVisibility(View.INVISIBLE);
         if(itemID == R.id.nav_outfit){
+            botonEdit.setVisibility(View.VISIBLE);
             OutfitFragment outfitFragment = new OutfitFragment();
             outfitFragment.setArguments(args);
             openFragment(outfitFragment);
@@ -345,7 +358,6 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
             home.setArguments(args);
             openFragment(home);
         }else if(itemID == R.id.nav_logout){
-
             SharedPreferences.Editor aux = getSharedPreferences("com.example.ewardrobe.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE).edit();
             aux.clear();
             aux.apply();
@@ -356,9 +368,11 @@ public class MainScreen extends AppCompatActivity implements NavigationView.OnNa
             finish();
         }else if(itemID == R.id.nav_outfitcreator){
             Intent intent = new Intent(this, CreaOutfitScreen.class);
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_profile){
             Intent intent = new Intent(this, ProfileScreen.class);
+            intent.putExtra("email", email);
             startActivity(intent);
         }
         drawer.closeDrawer(GravityCompat.START);

@@ -42,7 +42,7 @@ public class WardrobeFragment extends Fragment {
         database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
         obtenerArmario();
         View view;
-        if(armario) {
+        if(!armario) {
             view = inflater.inflate(R.layout.no_wardrobe, container, false);
         }else{
             view = inflater.inflate(R.layout.fragment_wardrobe, container, false);
@@ -54,7 +54,7 @@ public class WardrobeFragment extends Fragment {
 
     private void obtenerArmario(){
         reference = database.getReference();
-        Query query = reference.child("usuarios").child(usuario).child("armarios");
+        Query query = reference.child("usuarios").child(usuario).child("armario");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

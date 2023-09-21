@@ -48,6 +48,8 @@ public class HomeFragment extends Fragment {
 
     String userID;
 
+    String email;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -58,12 +60,23 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         userID = getArguments().getString("userID");
+        email = getArguments().getString("email");
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
         slider = view.findViewById(R.id.slider_image);
         database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
 
         crearBotones(view);
         imagenes = new ArrayList<>();
+
+        imagenes.add(new SlideModel(R.drawable.ropas, ScaleTypes.FIT));
+        imagenes.add(new SlideModel(R.drawable.estanteria, ScaleTypes.FIT));
+        imagenes.add(new SlideModel(R.drawable.ropa_estandar, ScaleTypes.FIT));
+        imagenes.add(new SlideModel(R.drawable.ajuste, ScaleTypes.FIT));
+        imagenes.add(new SlideModel(R.drawable.armarios, ScaleTypes.FIT));
+        imagenes.add(new SlideModel(R.drawable.logo, ScaleTypes.FIT));
+        imagenes.add(new SlideModel(R.drawable.pantalones, ScaleTypes.FIT));
+
+        slider.setImageList(imagenes);
         //obtenerDestacados();
 
 
@@ -122,8 +135,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ProfileScreen.class);
+                intent.putExtra("email", email);
                 startActivity(intent);
-                getActivity().finish();
             }
         });
         prendas.setOnClickListener(new View.OnClickListener() {
@@ -148,15 +161,15 @@ public class HomeFragment extends Fragment {
                 openFragment(wardrobeFragment);
             }
         });
-        setting.setOnClickListener(new View.OnClickListener() {
+        outfit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CreaOutfitScreen.class);
+                intent.putExtra("email", email);
                 startActivity(intent);
-                getActivity().finish();
             }
         });
-        outfit.setOnClickListener(new View.OnClickListener() {
+        setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();

@@ -8,10 +8,39 @@ public class Usuario {
 
     private String id;
 
+    private String tlf;
+    private String ubi;
+
     public Usuario(String nombre, String mail, String pass) {
         this.nombre = nombre;
         this.mail = mail;
         this.pass = pass;
+        this.ubi = "N/A";
+        this.tlf = "N/A";
+    }
+
+    public Usuario(String nombre, String mail, String pass, String ubi, String tlf) {
+        this.nombre = nombre;
+        this.mail = mail;
+        this.pass = pass;
+        this.ubi = ubi;
+        this.tlf = tlf;
+    }
+
+    public String getTlf() {
+        return tlf;
+    }
+
+    public void setTlf(String tlf) {
+        this.tlf = tlf;
+    }
+
+    public String getUbi() {
+        return ubi;
+    }
+
+    public void setUbi(String ubi) {
+        this.ubi = ubi;
     }
 
     public String getId() {

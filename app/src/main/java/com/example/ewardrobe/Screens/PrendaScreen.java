@@ -130,24 +130,30 @@ public class PrendaScreen extends AppCompatActivity implements NavigationView.On
         if(itemID == R.id.nav_outfit){
             Intent intent = new Intent(PrendaScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "OutfitFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_wardrobe){
             Intent intent = new Intent(PrendaScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "WardrobeFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_clothes){
             Intent intent = new Intent(PrendaScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "PrendasFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_home){
             Intent intent = new Intent(PrendaScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "HomeFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_outfitcreator){
             Intent intent = new Intent(this, CreaOutfitScreen.class);
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_profile){
             Intent intent = new Intent(this, ProfileScreen.class);
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_logout){
             SharedPreferences.Editor aux = getSharedPreferences("com.example.ewardrobe.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE).edit();

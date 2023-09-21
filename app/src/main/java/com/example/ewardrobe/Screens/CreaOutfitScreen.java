@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,9 +26,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ewardrobe.Adapters.PrendaAdapter;
 import com.example.ewardrobe.BBDD.Prenda;
 import com.example.ewardrobe.BBDD.Usuario;
@@ -60,19 +63,20 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
     private BottomNavigationView bottomNavigationView;
     private Toolbar toolbar;
     private FloatingActionButton fab;
-    RecyclerView recycler;
+    RecyclerView recycler, recyclerAcc;
 
     String email;
     Usuario user;
     DatabaseReference reference;
     FirebaseDatabase database;
 
-    ImageView img, img2,img3;
+    ImageView img, img2,img3, img4;
 
-    ImageButton superior,piernas,pies;
+    ImageButton superior,piernas,pies, fullBody;
 
-    PrendaAdapter prendaAdapter;
+    PrendaAdapter prendaAdapter, accAdapter;
     List<Prenda> prendas;
+    List<Prenda> accesorios;
     List<Prenda> visibles;
 
     TipoRopa visible;
@@ -83,7 +87,6 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.crea_outfit_screen);
         database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
-        obtenerUsuario();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fab = findViewById(R.id.botonMas);
@@ -93,6 +96,10 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         recycler = findViewById(R.id.recyclerView);
         recycler.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recycler.setHasFixedSize(true);
+
+        recyclerAcc = findViewById(R.id.recyclerAcc);
+        recyclerAcc.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+        recyclerAcc.setHasFixedSize(true);
 
 
         drawer.addDrawerListener(toggle);
@@ -140,6 +147,7 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         img = findViewById(R.id.superior);
         img2 = findViewById(R.id.piernas);
         img3 = findViewById(R.id.pies);
+        img4 = findViewById(R.id.fullBody);
 
         superior = findViewById(R.id.limpiaSuperior);
         superior.setVisibility(View.INVISIBLE);
@@ -161,6 +169,22 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             }
         });
 
+        fullBody = findViewById(R.id.limpiaBody);
+        fullBody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                img4.setImageResource(android.R.color.transparent);
+                img.setImageResource(android.R.color.transparent);
+                img2.setImageResource(android.R.color.transparent);
+
+                findViewById(R.id.layoutPiernas).setVisibility(View.VISIBLE);
+                findViewById(R.id.layoutTorso).setVisibility(View.VISIBLE);
+                findViewById(R.id.layoutBody).setVisibility(View.GONE);
+
+            }
+        });
+
+
         pies = findViewById(R.id.limpiaPies);
         pies.setVisibility(View.INVISIBLE);
         pies.setOnClickListener(new View.OnClickListener() {
@@ -173,8 +197,7 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
 
         prendas = new ArrayList<>();
         visibles = new ArrayList<>();
-
-        obtenerPrendas();
+        obtenerUsuario();
 
 
     }
@@ -205,9 +228,73 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
                     prendas.add(prenda);
                 }
                 visible = TipoRopa.superior;
-                actualizaRopa();
                 prendaAdapter = new PrendaAdapter(visibles, getApplicationContext());
+                accAdapter = new PrendaAdapter(accesorios, getApplicationContext());
+                recyclerAcc.setAdapter(accAdapter);
                 recycler.setAdapter(prendaAdapter);
+
+                prendaAdapter.setOnclickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Prenda prenda = prendas.get(recycler.getChildAdapterPosition(view));
+
+                        switch (visible){
+                            case superior:
+                                if(prenda.getTipo().equals("Vestido") || prenda.getTipo().equals("Traje") || prenda.getTipo().equals("Pijama")){
+                                    findViewById(R.id.layoutPiernas).setVisibility(View.GONE);
+                                    findViewById(R.id.layoutTorso).setVisibility(View.GONE);
+                                    img.setImageResource(android.R.color.transparent);
+                                    img2.setImageResource(android.R.color.transparent);
+                                    findViewById(R.id.layoutBody).setVisibility(View.VISIBLE);
+
+                                    Glide.with(getApplicationContext()).load(prenda.getFotoURL()).into(img4);
+                                }else {
+                                    findViewById(R.id.layoutPiernas).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.layoutTorso).setVisibility(View.VISIBLE);
+                                    img4.setImageResource(android.R.color.transparent);
+                                    img2.setImageResource(android.R.color.transparent);
+                                    findViewById(R.id.layoutBody).setVisibility(View.GONE);
+
+
+                                    Glide.with(getApplicationContext()).load(prenda.getFotoURL()).into(img);
+                                    superior.setVisibility(View.VISIBLE);
+                                }
+                                break;
+                            case medio:
+                                if(findViewById(R.id.layoutBody).getVisibility() == View.VISIBLE){
+                                    findViewById(R.id.layoutPiernas).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.layoutTorso).setVisibility(View.VISIBLE);
+                                    img4.setImageResource(android.R.color.transparent);
+                                    img.setImageResource(android.R.color.transparent);
+                                    findViewById(R.id.layoutBody).setVisibility(View.GONE);
+                                }
+                                Glide.with(getApplicationContext()).load(prenda.getFotoURL()).into(img2);
+                                piernas.setVisibility(View.VISIBLE);
+                                break;
+                            case inferior:
+                                Glide.with(getApplicationContext()).load(prenda.getFotoURL()).into(img3);
+                                pies.setVisibility(View.VISIBLE);
+                                break;
+                            case accesorios:
+                                accesorios.add(prenda);
+                                recyclerAcc.getAdapter().notifyDataSetChanged();
+                                break;
+                        }
+
+                    }
+                });
+
+                accAdapter.setOnclickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Prenda prenda = prendas.get(recycler.getChildAdapterPosition(view));
+                        accesorios.remove(prenda);
+                        recyclerAcc.getAdapter().notifyDataSetChanged();
+
+                    }
+                });
+
+                actualizaRopa();
             }
 
             @Override
@@ -234,6 +321,8 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
                     user = new Usuario(usuario.getText().toString(), mail.getText().toString(), userSnapshot.child("pass").getValue(String.class));
                     user.setId(userSnapshot.getKey());
                 }
+
+                obtenerPrendas();
             }
 
             @Override
@@ -248,21 +337,26 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         if(itemID == R.id.nav_outfit){
             Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "OutfitFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_wardrobe){
             Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "WardrobeFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_clothes){
             Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "PrendasFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_home){
             Intent intent = new Intent(CreaOutfitScreen.this, MainScreen.class);
             intent.putExtra("fragmentToOpen", "HomeFragment");
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_profile){
             Intent intent = new Intent(CreaOutfitScreen.this, ProfileScreen.class);
+            intent.putExtra("email", email);
             startActivity(intent);
         }else if(itemID == R.id.nav_logout){
             SharedPreferences.Editor aux = getSharedPreferences("com.example.ewardrobe.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE).edit();
@@ -288,6 +382,7 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void actualizaRopa(){
         visibles.clear();
         ArrayList<String> opciones = new ArrayList<>();
@@ -319,5 +414,6 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
             if(opciones.contains(prendas.get(i).getTipo()))
                 visibles.add(prendas.get(i));
         }
+        recycler.getAdapter().notifyDataSetChanged();
     }
 }
