@@ -32,30 +32,19 @@ import java.util.List;
 
 public class OutfitFragment extends Fragment {
 
-    RecyclerView recycler, recycler_filtros, recycler_colores;
+    RecyclerView recycler, recycler_acc, recycler_colores;
     PrendaAdapter prendaAdapter;
     List<Prenda> prendas;
-
-    FiltroAdapter filtroAdapter;
-
+    List<String> outfits;
     FiltroColorAdapter filtroColorAdapter;
-    ImageButton button;
-    private ArrayList<Prenda> searchList;
-    Boolean filtrosVisibles;
-
     ArrayList<String> filtros;
     ArrayList<String> colores;
-
     DatabaseReference reference;
     FirebaseDatabase database;
-
     String userID;
+    ImageView img, img2,img3, img4;
 
-    ImageView img, img2,img3;
 
-    ImageButton superior,piernas,pies;
-
-    String[] filtradoColaborativo;
 
     public OutfitFragment() {
         // Required empty public constructor
@@ -68,74 +57,21 @@ public class OutfitFragment extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_outfit, container, false);
 
-        filtradoColaborativo = new String[2];
-        for (int i = 0; i < 2; i++) {
-            filtradoColaborativo[i] = "";
-        }
 
         setRecycler(view);
         userID = getArguments().getString("userID");
         database = FirebaseDatabase.getInstance("https://ewardrobe-dcf0c-default-rtdb.europe-west1.firebasedatabase.app/");
-        filtrosVisibles = false;
         prendas = new ArrayList<>();
 
         img = view.findViewById(R.id.superior);
-        img2 = view.findViewById(R.id.piernas);
-        img3 = view.findViewById(R.id.pies);
+        img2 = view.findViewById(R.id.medio);
+        img3 = view.findViewById(R.id.inferior);
 
-        prendaAdapter = new PrendaAdapter(searchList, getContext());
+        prendaAdapter = new PrendaAdapter(prendas, getContext());
         recycler.setAdapter(prendaAdapter);
-
-        filtroAdapter = new FiltroAdapter(filtros,getContext(), this, "tipo");
-        recycler_filtros.setAdapter(filtroAdapter);
 
         filtroColorAdapter = new FiltroColorAdapter(colores,getContext(), this);
         recycler_colores.setAdapter(filtroColorAdapter);
-
-        button = view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(filtrosVisibles){
-                    recycler_filtros.setVisibility(View.GONE);
-                    recycler_colores.setVisibility(View.GONE);
-                }else{
-                    recycler_filtros.setVisibility(View.VISIBLE);
-                    recycler_colores.setVisibility(View.VISIBLE);
-                }
-                filtrosVisibles = !filtrosVisibles;
-            }
-        });
-
-        superior = view.findViewById(R.id.limpiaSuperior);
-        superior.setVisibility(View.INVISIBLE);
-        superior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                img.setImageResource(android.R.color.transparent);
-                superior.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        piernas = view.findViewById(R.id.limpiaPiernas);
-        piernas.setVisibility(View.INVISIBLE);
-        piernas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                img2.setImageResource(android.R.color.transparent);
-                piernas.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        pies = view.findViewById(R.id.limpiaPies);
-        pies.setVisibility(View.INVISIBLE);
-        pies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                img3.setImageResource(android.R.color.transparent);
-                pies.setVisibility(View.INVISIBLE);
-            }
-        });
 
         obtenerPrendas();
 
@@ -145,7 +81,7 @@ public class OutfitFragment extends Fragment {
     private void obtenerPrendas(){
 
         reference = database.getReference();
-        Query query = reference.child("usuarios").child(userID).child("prendas");
+        Query query = reference.child("usuarios").child(userID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -179,40 +115,18 @@ public class OutfitFragment extends Fragment {
     }
 
     public void continuacion(){
-        searchList.addAll(prendas);
         obtenerFiltros();
         obtenerColores();
 
-        prendaAdapter = new PrendaAdapter(searchList, getContext());
+        prendaAdapter = new PrendaAdapter(prendas, getContext());
         recycler.setAdapter(prendaAdapter);
 
         prendaAdapter.setOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Prenda prenda = prendas.get(recycler.getChildAdapterPosition(view));
-
-                switch (prenda.getTipo()){
-                    case "Camiseta":
-                        Glide.with(getContext()).load(prenda.getFotoURL()).into(img);
-                        superior.setVisibility(View.VISIBLE);
-                        break;
-                    case "Zapatos":
-                    case "Zapatillas":
-                        Glide.with(getContext()).load(prenda.getFotoURL()).into(img3);
-                        pies.setVisibility(View.VISIBLE);
-                        break;
-                    case "Pantalones":
-                        Glide.with(getContext()).load(prenda.getFotoURL()).into(img2);
-                        piernas.setVisibility(View.VISIBLE);
-                        break;
-                }
-
             }
         });
-
-        filtroAdapter = new FiltroAdapter(filtros,getContext(), this, "tipo");
-        recycler_filtros.setAdapter(filtroAdapter);
-
 
         filtroColorAdapter = new FiltroColorAdapter(colores,getContext(), this);
         recycler_colores.setAdapter(filtroColorAdapter);
@@ -240,67 +154,32 @@ public class OutfitFragment extends Fragment {
         }
     }
 
-    public void filtradoBotones(String nombre, String tipo, String get){
-
-        if(tipo.equals("filtrar")){
-            switch (get){
-                case "color":
-                    filtradoColaborativo[1]+= " " + nombre;
-                    break;
-                case "tipo":
-                    filtradoColaborativo[0]+= " " + nombre;
-                    break;
-            }
-            filtrar();
-            recycler.getAdapter().notifyDataSetChanged();
-        }else{
-            switch (get){
-                case "color":
-                    filtradoColaborativo[1] = filtradoColaborativo[1].replace(" " + nombre, "");
-                    break;
-                case "tipo":
-                    filtradoColaborativo[0] = filtradoColaborativo[0].replace(" " + nombre, "");
-                    break;
-            }
-            filtrar();
-            recycler.getAdapter().notifyDataSetChanged();
-        }
-
-    }
-
     public void setRecycler(View view){
         recycler = view.findViewById(R.id.recyclerView);
-        recycler_filtros = view.findViewById(R.id.recyclerBotones);
         recycler_colores = view.findViewById(R.id.recyclerColores);
-        button = view.findViewById(R.id.button);
-        recycler_filtros.setVisibility(View.INVISIBLE);
-        recycler_filtros.setVisibility(View.GONE);
-        recycler_colores.setVisibility(View.INVISIBLE);
-        recycler_colores.setVisibility(View.GONE);
-        recycler_filtros.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recycler_colores.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recycler.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recycler.setHasFixedSize(true);
     }
 
-    private void filtrar() {
-        searchList.clear();
-        for (Prenda prenda : prendas) {
-            if (filtradoColaborativo[0].equals("") || filtradoColaborativo[0].contains(prenda.getTipo())) {
-                boolean color_esta = false;
-                if (filtradoColaborativo[1].equals(""))
-                    color_esta = true;
-                else {
-                    for (String color : prenda.getColores()) {
-                        String aux = color.replace(" ", "");
-                        if (filtradoColaborativo[1].contains(aux))
-                            color_esta = true;
-                    }
-                }
-                if (color_esta) {
-                    searchList.add(prenda);
-                }
-            }
-        }
-    }
+//    private void filtrar() {
+//        searchList.clear();
+//        for (Prenda prenda : prendas) {
+//            if (filtradoColaborativo[0].equals("") || filtradoColaborativo[0].contains(prenda.getTipo())) {
+//                boolean color_esta = false;
+//                if (filtradoColaborativo[1].equals(""))
+//                    color_esta = true;
+//                else {
+//                    for (String color : prenda.getColores()) {
+//                        String aux = color.replace(" ", "");
+//                        if (filtradoColaborativo[1].contains(aux))
+//                            color_esta = true;
+//                    }
+//                }
+//                if (color_esta) {
+//                    searchList.add(prenda);
+//                }
+//            }
+//        }
+//    }
 }

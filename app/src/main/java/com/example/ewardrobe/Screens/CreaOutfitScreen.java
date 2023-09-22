@@ -81,7 +81,6 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
 
     TipoRopa visible;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +196,7 @@ public class CreaOutfitScreen extends AppCompatActivity implements NavigationVie
 
         prendas = new ArrayList<>();
         visibles = new ArrayList<>();
+        accesorios = new ArrayList<>();
         obtenerUsuario();
 
 

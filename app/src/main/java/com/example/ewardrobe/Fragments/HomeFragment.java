@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment {
         CardView prendas = v.findViewById(R.id.PrendasCard);
         CardView armario = v.findViewById(R.id.WardrobeCard);
         CardView outfit = v.findViewById(R.id.OutfitCard);
-        CardView setting = v.findViewById(R.id.SettingCard);
+        CardView outfits = v.findViewById(R.id.SettingCard);
         CardView logout = v.findViewById(R.id.LogoutCard);
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        setting.setOnClickListener(new View.OnClickListener() {
+        outfits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle args = new Bundle();
